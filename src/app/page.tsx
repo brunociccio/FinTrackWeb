@@ -1,10 +1,8 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { fetchUltimasMovimentacoes } from './movimentacoes/UltimasMovimentacoes'
 import MovimentacaoTable from '@/components/MovimentacaoTable';
 import { NavBar } from '@/components/NavBar';
-import { fetchMaiorMovimentacao, fetchMenorMovimentacao, fetchUltimaMovimentacao } from './movimentacoes/UltimasFuncoesCp';
 import axios from 'axios';
 
 export default function Home() {
