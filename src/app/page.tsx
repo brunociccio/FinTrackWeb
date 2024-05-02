@@ -4,20 +4,34 @@ import React, { useEffect, useState } from 'react';
 import { fetchUltimasMovimentacoes } from './movimentacoes/UltimasMovimentacoes'
 import MovimentacaoTable from '@/components/MovimentacaoTable';
 import { NavBar } from '@/components/NavBar';
+import { fetchMaiorMovimentacao, fetchMenorMovimentacao, fetchUltimaMovimentacao } from './movimentacoes/UltimasFuncoesCp';
+import axios from 'axios';
 
 export default function Home() {
   const [totais, setTotais] = useState([]);
   const [ultimasMovimentacoes, setUltimasMovimentacoes] = useState([]);
+  const [menorMovimentacao, setMenorMovimentacao] = useState(null);
+  const [maiorMovimentacao, setMaiorMovimentacao] = useState(null);
+  const [ultimaMovimentacao, setUltimaMovimentacao] = useState(null);
 
   useEffect(() => {
-    async function carregarDados() {
-
-      // Buscar últimas movimentações
-      const ultimasMovimentacoesData = await fetchUltimasMovimentacoes();
-      setUltimasMovimentacoes(ultimasMovimentacoesData);
+    async function fetchData() {
+      try {
+        const menorResposta = await axios.get('http://localhost:8080/movimentacao/menor');
+        setMenorMovimentacao(menorResposta.data);
+        
+        const maiorResposta = await axios.get('http://localhost:8080/movimentacao/maior');
+        setMaiorMovimentacao(maiorResposta.data);
+        
+        const ultimaResposta = await axios.get('http://localhost:8080/movimentacao/ultima');
+        setUltimaMovimentacao(ultimaResposta.data);
+      } catch (error) {
+        console.error('Erro ao buscar as movimentações:', error);
+      }
     }
 
-    carregarDados();
+    fetchData();
+
   }, []);
 
   return (
@@ -34,6 +48,21 @@ export default function Home() {
       <section>
         <h3 className="text-lg font-bold">Últimas movimentações</h3>
         <MovimentacaoTable data={ultimasMovimentacoes} />
+      </section>
+
+      <section>
+        <h3 className="text-lg font-bold">Menor Movimentação</h3>
+        <p>{menorMovimentacao ? JSON.stringify(menorMovimentacao) : 'Carregando...'}</p>
+      </section>
+
+      <section>
+        <h3 className="text-lg font-bold">Maior Movimentação</h3>
+        <p>{maiorMovimentacao ? JSON.stringify(maiorMovimentacao) : 'Carregando...'}</p>
+      </section>
+
+      <section>
+        <h3 className="text-lg font-bold">Última Movimentação</h3>
+        <p>{ultimaMovimentacao ? JSON.stringify(ultimaMovimentacao) : 'Carregando...'}</p>
       </section>
     </main>
   );
