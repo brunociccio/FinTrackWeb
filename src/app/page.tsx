@@ -102,11 +102,11 @@ export default function Home() {
       <NavBar active="dashboard"/>
       <h2 className="text-2xl font-bold">Dashboard</h2>
 
-       <section className="grid grid-flow-col-dense  gap-5">
+      <section className="grid grid-flow-col-dense  gap-5">
         { totais.map( t => <CardStats {...t} /> ) }
       </section>
- 
-     {/* <section className="flex gap-4">
+
+    {/* <section className="flex gap-4">
         <Card>
           <CardHeader>
             <BarChart />
